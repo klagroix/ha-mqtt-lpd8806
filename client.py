@@ -33,22 +33,21 @@ except:
 import paho.mqtt.client as mqtt # import the mqtt client
 from raspledstrip.ledstrip import * # import RGB stuff
 import json # config parsing
-import os
 import sys
 
 CONFIG_FILE = "config.json"
 try:
     with open(CONFIG_FILE, 'r') as f:
-    config = json.load(f)
+        config = json.load(f)
 except:
     config = {}
 
 
-BROKER_ADDRESS = config["BrokerAddress"] or os.environ.get("BROKER_ADDRESS") 
-BROKER_USER = config["BrokerUser"] or os.environ.get("BROKER_USER") or None 
-BROKER_PASS = config["BrokerPass"] or os.environ.get("BROKER_PASS") or None 
-CLIENT_NAME = config["ClientName"] or os.environ.get("CLIENT_NAME") or None
-PREFIX = config["TopicPrefix"] or os.environ.get("TOPIC_PREFIX")
+BROKER_ADDRESS = config.get("BrokerAddress", None)
+BROKER_USER = config.get("BrokerUser", None)
+BROKER_PASS = config.get("BrokerPass", None)
+CLIENT_NAME = config.get("ClientName", None)
+PREFIX = config.get("TopicPrefix", None)
 SUBSCRIBE_TOPICS = ["%s/#" % (PREFIX)]
 
 STATE_TOPIC = "%s/light/status" % (PREFIX)
@@ -57,13 +56,13 @@ COMMAND_TOPIC = "%s/light/switch" % (PREFIX)
 ON = "ON"
 OFF = "OFF"
 
-NUM_LEDS = config["NumLeds"] or os.environ.get("NUM_LEDs") or 56
+NUM_LEDS = config.get("TopicPrefix", 56)
 
 # Verify config
-if BROKER_ADDRESS is None
+if BROKER_ADDRESS is None:
     print("No Broker Address")
     sys.exit(1)
-if PREFIX is None
+if PREFIX is None:
     print("No Topic Prefix")
     sys.exit(1)
 
