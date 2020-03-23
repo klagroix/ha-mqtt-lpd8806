@@ -93,7 +93,7 @@ class Light:
 
     def turn_on(self, r=255, g=255, b=255, brightness=1):
         """Turns the lights on"""
-        print("Turning the lights on with values: (r=%s, g=%s, b=%s, brightness=%s)")
+        print("Turning the lights on with values: (r=%s, g=%s, b=%s, brightness=%s)" %  (r, g, b, brightness))
         self.r = r
         self.g = g
         self.b = b
