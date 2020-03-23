@@ -1,4 +1,4 @@
-# python3
+#!/usr/bin/python
 #
 # Reqired installs:
 #   pip install paho-mqtt

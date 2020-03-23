@@ -39,9 +39,10 @@ light
 
 ## Raspberry Pi configuration
 
-1. Checkout this repository
+1. Navigate to `/usr/local/bin/`
+2. Checkout this repository
     ```
-    git clone https://github.com/klagroix/ha-mqtt-lpd8806.git
+    sudo git clone https://github.com/klagroix/ha-mqtt-lpd8806.git
     cd ha-mqtt-lpd8806/
     ```
 
@@ -62,41 +63,22 @@ light
 
 NOTE: As stated earlier, I'm on an old OS. This isn't based on systemd. If I had systemd, I'd run something like this https://tecadmin.net/setup-autorun-python-script-using-systemd/
 
-I followed this guide: https://www.pietervanos.net/knowledge/start-python-script-from-init-d/
+I followed this guide: http://blog.scphillips.com/posts/2013/07/getting-a-python-script-to-run-in-the-background-as-a-service-on-boot/
 
-1. Create this file `/etc/init.d/backlight`:    
+1. Copy `backlight` from `/usr/local/bin/ha-mqtt-lpd8806/` to `/etc/init.d/`
     ```
-    #! /bin/sh
-    # /etc/init.d/backlight
-    
-    case "$1" in
-      start)
-        echo "Starting backlight"
-        # run application you want to start
-        python /usr/local/bin/ha-mqtt-lpd8806/main.py &
-        ;;
-      stop)
-        echo "Stopping backlight"
-        # kill application you want to stop
-        kill $(ps aux | grep "python /usr/local/bin/ha-mqtt-lpd8806/main.py" | awk '{print $2}')
-        ;;
-      *)
-        echo "Usage: /etc/init.d/backlight{start|stop}"
-        exit 1
-        ;;
-    esac
-    
-    exit 0
+    sudo cp /usr/local/bin/ha-mqtt-lpd8806/backlight /etc/init.d/backlight
     ```
 
 2. Edit the permissions:
     ```
-    sudo chmod 755 backlight 
+    sudo chmod 755 /etc/init.d/backlight.sh
+    sudo chmod 755 /usr/local/bin/ha-mqtt-lpd8806/main.py
     ```
 
 3. Execute:
     ```
-    sudo update-rc.d backlight defaults
+    sudo update-rc.d backlight.sh defaults
     ```
 
 4. Stop and Start the service as needed
