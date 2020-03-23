@@ -122,6 +122,7 @@ class Light:
 
     def set_brightness(self, level):
         """Sets the brighness to a certain level"""
+        print("Got request to set brightness")
         # Home assistant sets brightness on a scale of 0 to 255
         if level > 0 and level < 255:
             new_level = level / 255
