@@ -36,8 +36,9 @@ import paho.mqtt.client as mqtt # import the mqtt client
 from raspledstrip.ledstrip import * # import RGB stuff
 import json # config parsing
 import sys
+import os
 
-CONFIG_FILE = "config.json"
+CONFIG_FILE = "%s/config.json" % (os.path.dirname(os.path.realpath(__file__)))
 try:
     with open(CONFIG_FILE, 'r') as f:
         config = json.load(f)
@@ -80,7 +81,8 @@ print ("STATE_TOPIC: %s" % (STATE_TOPIC))
 print ("COMMAND_TOPIC: %s" % (COMMAND_TOPIC))
 print ("BRIGHTNESS_STATE_TOPIC: %s" % (BRIGHTNESS_STATE_TOPIC))
 print ("BRIGHTNESS_COMMAND_TOPIC: %s" % (BRIGHTNESS_COMMAND_TOPIC))
-
+print ("RGB_STATE_TOPIC: %s" % (RGB_STATE_TOPIC))
+print ("RGB_COMMAND_TOPIC: %s" % (RGB_COMMAND_TOPIC))
 
 # #######################
 # Class
