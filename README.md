@@ -54,4 +54,4 @@ light
         "NumLeds": 56
     }
     ```
-3. Run `python client.py`
+3. Run `python main.py`
