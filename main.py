@@ -72,6 +72,12 @@ if PREFIX is None:
     sys.exit(1)
 
 
+print ("Subscribing to %s" % (SUBSCRIBE_TOPICS))
+print ("STATE_TOPIC: %s" % (STATE_TOPIC))
+print ("COMMAND_TOPIC: %s" % (COMMAND_TOPIC))
+print ("BRIGHTNESS_STATE_TOPIC: %s" % (BRIGHTNESS_STATE_TOPIC))
+print ("BRIGHTNESS_COMMAND_TOPIC: %s" % (BRIGHTNESS_COMMAND_TOPIC))
+
 
 # #######################
 # Class
@@ -80,10 +86,10 @@ class Light:
     client = None
 
     # Tracking these for brightness changes. There's probably a way to set brightness without tracking colours but I haven't looked into it much yet
-    r = 0
-    g = 0
-    b = 0
-    brightness = 0
+    r = 255
+    g = 255
+    b = 255
+    brightness = 1
     
     def __init__(self, client, num_lights):
         """Provide the mqtt client to publish messages on and the number of lights in LED string"""
@@ -91,14 +97,19 @@ class Light:
         self.num_lights = num_lights
         self.led = LEDStrip(self.num_lights)
 
-    def turn_on(self, r=255, g=255, b=255, brightness=1):
+    def turn_on(self, r=None, g=None, b=None, brightness=None):
         """Turns the lights on"""
-        print("Turning the lights on with values: (r=%s, g=%s, b=%s, brightness=%s)" %  (r, g, b, brightness))
-        self.r = r
-        self.g = g
-        self.b = b
-        self.brightness = brightness
-        self.led.fill(Color(r,g,b,brightness))
+        print("Got request to turn on the lights on with values: (r=%s, g=%s, b=%s, brightness=%s)" %  (r, g, b, brightness))
+        if r is not None:
+            self.r = r
+        if g is not None:
+            self.g = g
+        if b is not None:
+            self.b = b
+        if brightness is not None:
+            self.brightness = brightness
+        print("Turning on lights on with values: (r=%s, g=%s, b=%s, brightness=%s)" %  (self.r, self.g, self.b, self.brightness))
+        self.led.fill(Color(self.r,self.g,self.b, self.brightness))
 
         self.led.update()
         self.client.publish(STATE_TOPIC, ON) #publish
