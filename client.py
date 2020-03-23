@@ -56,7 +56,7 @@ COMMAND_TOPIC = "%s/light/switch" % (PREFIX)
 ON = "ON"
 OFF = "OFF"
 
-NUM_LEDS = config.get("TopicPrefix", 56)
+NUM_LEDS = config.get("NumLeds", 56)
 
 # Verify config
 if BROKER_ADDRESS is None:
