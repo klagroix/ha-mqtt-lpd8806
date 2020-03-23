@@ -143,20 +143,26 @@ def on_connect(mqtt_client, obj, flags, rc):
 def on_message(client, userdata, message):
     """Handles the message"""
     payload = str(message.payload.decode("utf-8"))
-    print("message received ", payload)
-    print("message topic=", message.topic)
-    print("message qos=", message.qos)
-    print("message retain flag=", message.retain)
+    print("message received: %s" % (payload))
+    print("message topic: %s" % (message.topic))
+    print("message qos: %s" % (message.qos))
+    print("message retain flag: %s" % (message.retain))
 
     if message.topic == COMMAND_TOPIC:
+        print("Matched COMMAND_TOPIC (%s)" % (COMMAND_TOPIC))
         # We have a command
         if payload == ON:
             light.turn_on()
         if payload == OFF:
             light.turn_off()
+    else:
+        print("Didn't match COMMAND_TOPIC (%s)" % (COMMAND_TOPIC))
     if message.topic == BRIGHTNESS_COMMAND_TOPIC:
+        print("Matched BRIGHTNESS_COMMAND_TOPIC (%s)" % (BRIGHTNESS_COMMAND_TOPIC))
         # We have a brighness command
         light.set_brightness(payload)
+    else:
+        print("Didn't match BRIGHTNESS_COMMAND_TOPIC (%s)" % (BRIGHTNESS_COMMAND_TOPIC))
 
 print("Starting HomeAssistant MQTT LPD8806 Broker")
 #broker_address="iot.eclipse.org" #use external broker
