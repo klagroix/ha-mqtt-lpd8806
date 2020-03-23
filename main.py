@@ -112,9 +112,10 @@ class Light:
     def set_brightness(self, level):
         """Sets the brighness to a certain level"""
         if level > 0 and level < 100:
-            level = level / 100
-        print("Setting brightness to %s" % (level))
-        self.turn_on(r=self.r, g=self.g, b=self.b, brightness=level)
+            new_level = level / 100
+        print("Setting brightness to %s" % (new_level))
+        self.turn_on(r=self.r, g=self.g, b=self.b, brightness=new_level)
+        self.client.publish(BRIGHTNESS_STATE_TOPIC, level) #publish
 
 
 
