@@ -110,3 +110,10 @@ I followed this guide: https://www.pietervanos.net/knowledge/start-python-script
 Optional: Stop the service above (`sudo service backlight stop`)
 
 Run the script in shell. Debug info is output to STDOUT
+
+
+## TODO items:
+* Add Logging
+* Support individually addressable LED applications. Examples:
+    * Progress bar
+    * VU meter
