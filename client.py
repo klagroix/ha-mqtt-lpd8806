@@ -2,7 +2,8 @@
 #
 # Reqired installs:
 #   pip install paho-mqtt
-#   git clone https://github.com/adammhaile/RPi-LPD8806.git
+#   Follow: https://github.com/longjos/RPi-LPD8806
+#     git clone https://github.com/adammhaile/RPi-LPD8806.git 
 #     cd RPi-LPD8806
 #     python setup.py install
 #
