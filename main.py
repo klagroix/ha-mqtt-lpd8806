@@ -58,6 +58,9 @@ COMMAND_TOPIC = "%s/light/switch" % (PREFIX)
 BRIGHTNESS_STATE_TOPIC = "%s/brightness/status" % (PREFIX)
 BRIGHTNESS_COMMAND_TOPIC = "%s/brightness/set" % (PREFIX)
 
+RGB_STATE_TOPIC = "%s/rgb/status" % (PREFIX)
+RGB_COMMAND_TOPIC = "%s/rgb/set" % (PREFIX)
+
 ON = "ON"
 OFF = "OFF"
 
@@ -123,7 +126,6 @@ class Light:
     def set_brightness(self, level):
         """Sets the brighness to a certain level"""
         print("Got request to set brightness with level: %s" % (level))
-        level = int(level)
         # Home assistant sets brightness on a scale of 0 to 255
         if level > 0 and level < 255:
             new_level = level / 255
@@ -151,20 +153,17 @@ def on_message(client, userdata, message):
     print("message retain flag: %s" % (message.retain))
 
     if message.topic == COMMAND_TOPIC:
-        print("Matched COMMAND_TOPIC (%s)" % (COMMAND_TOPIC))
         # We have a command
         if payload == ON:
             light.turn_on()
         if payload == OFF:
             light.turn_off()
-    else:
-        print("Didn't match COMMAND_TOPIC (%s)" % (COMMAND_TOPIC))
     if message.topic == BRIGHTNESS_COMMAND_TOPIC:
-        print("Matched BRIGHTNESS_COMMAND_TOPIC (%s)" % (BRIGHTNESS_COMMAND_TOPIC))
         # We have a brighness command
-        light.set_brightness(payload)
-    else:
-        print("Didn't match BRIGHTNESS_COMMAND_TOPIC (%s)" % (BRIGHTNESS_COMMAND_TOPIC))
+        light.set_brightness(int(payload))
+    if message.topic == RGB_COMMAND_TOPIC:
+        r,g,b = payload.split(",")
+        light.turn_on(r=int(r), g=int(g), b=int(b))
 
 print("Starting HomeAssistant MQTT LPD8806 Broker")
 #broker_address="iot.eclipse.org" #use external broker
