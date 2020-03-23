@@ -1,6 +1,8 @@
 # ha-mqtt-lpd8806
 Integrates Home Asssitant and LPD8806 LED strips via MQTT
 
+NOTE: My RPi is running a very old version of Rasbian (which I can't upgrade for various reasons). As such, this is running in python 2.7 but should theoretically work on python 3.x.
+
 ## Prerequsistes
 
 1. Install `paho-mqtt` using pip:    
@@ -55,3 +57,56 @@ light
     }
     ```
 3. Run `python main.py`
+
+## Running as a service
+
+NOTE: As stated earlier, I'm on an old OS. This isn't based on systemd. If I had systemd, I'd run something like this https://tecadmin.net/setup-autorun-python-script-using-systemd/
+
+I followed this guide: https://www.pietervanos.net/knowledge/start-python-script-from-init-d/
+
+1. Create this file `/etc/init.d/backlight`:    
+    ```
+    #! /bin/sh
+    # /etc/init.d/backlight
+    
+    case "$1" in
+      start)
+        echo "Starting backlight"
+        # run application you want to start
+        python /usr/local/bin/ha-mqtt-lpd8806/main.py &
+        ;;
+      stop)
+        echo "Stopping backlight"
+        # kill application you want to stop
+        kill $(ps aux | grep "python /usr/local/bin/ha-mqtt-lpd8806/main.py" | awk '{print $2}')
+        ;;
+      *)
+        echo "Usage: /etc/init.d/backlight{start|stop}"
+        exit 1
+        ;;
+    esac
+    
+    exit 0
+    ```
+
+2. Edit the permissions:
+    ```
+    sudo chmod 755 backlight 
+    ```
+
+3. Execute:
+    ```
+    sudo update-rc.d backlight defaults
+    ```
+
+4. Stop and Start the service as needed
+    ```
+    sudo service backlight stop
+    sudo service backlight start
+    ```
+
+## Troubleshooting
+
+Optional: Stop the service above (`sudo service backlight stop`)
+
+Run the script in shell. Debug info is output to STDOUT
