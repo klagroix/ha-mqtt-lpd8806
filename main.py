@@ -93,7 +93,7 @@ class Light:
 
     def turn_on(self, r=255, g=255, b=255, brightness=1):
         """Turns the lights on"""
-        print("Turning the lights on")
+        print("Turning the lights on with values: (r=%s, g=%s, b=%s, brightness=%s)")
         self.r = r
         self.g = g
         self.b = b
@@ -111,8 +111,9 @@ class Light:
 
     def set_brightness(self, level):
         """Sets the brighness to a certain level"""
-        if level > 0 and level < 100:
-            new_level = level / 100
+        # Home assistant sets brightness on a scale of 0 to 255
+        if level > 0 and level < 255:
+            new_level = level / 255
         print("Setting brightness to %s" % (new_level))
         self.turn_on(r=self.r, g=self.g, b=self.b, brightness=new_level)
         self.client.publish(BRIGHTNESS_STATE_TOPIC, level) #publish
